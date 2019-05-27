@@ -24,8 +24,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initshow();
         init();
 
+    }
+
+    //创建了默认账号和密码
+    private void initshow() {
+        user_database user1 = new user_database(LoginActivity.this);
+        SQLiteDatabase database1 = user1.getReadableDatabase();
+        List<userInfo> list = user1.querydata(database1);
+        if(list.isEmpty()){
+            user_database user2 = new user_database(LoginActivity.this);
+            SQLiteDatabase database2 = user2.getWritableDatabase();
+            user2.adddata(database2,"123456","123456","10000");
+        }
     }
 
     //初始化方法
@@ -110,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(LoginActivity.this,"推荐输入123456作为初始卡号和密码",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this,"可以输入123456作为测试卡号和密码",Toast.LENGTH_LONG).show();
                         }
                     }).show();
         }
